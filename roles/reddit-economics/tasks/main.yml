@@ -1,0 +1,26 @@
+---
+- import_tasks: hoa-bot.yml
+  become: true
+  become_user: '{{ reddit_econ_user }}'
+
+- import_tasks: ri-notify-bot.yml
+  become: true
+  become_user: '{{ reddit_econ_user }}'
+
+- name: copy the hoa systemd service
+  template:
+    src: systemd/badeconomics-hoa.service
+    dest: /etc/systemd/system/badeconomics-hoa.service
+  notify: hoa restart
+
+- name: copy the hoa systemd timer
+  template:
+    src: systemd/badeconomics-hoa.timer
+    dest: /etc/systemd/system/badeconomics-hoa.timer
+  notify: hoa restart
+
+- name: copy the notify bot systemd service
+  template:
+    src: systemd/badeconomics-ri-notify.service
+    dest: /etc/systemd/system/badeconomics-ri-notify.service
+  notify: ri notify restart

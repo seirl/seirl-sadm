@@ -1,0 +1,38 @@
+server {
+    include https_config;
+    server_name www.koin.fr;
+    return 301 $scheme://koin.fr$request_uri;
+}
+
+server {
+    include https_config;
+    server_name koin.fr;
+
+    index index.html;
+    root /home/seirl/www/koin.fr;
+
+    location /pub {
+        autoindex on;
+    }
+
+    location /blind {
+        autoindex on;
+    }
+
+    location /blind_classical {
+        autoindex on;
+    }
+
+    location /prologin {
+        autoindex on;
+        auth_basic "prologin members only";
+        auth_basic_user_file /home/seirl/www/koin.fr/prologin/.htpasswd;
+    }
+}
+
+server {
+    server_name piscine.koin.fr;
+    listen 80;
+    index index.html;
+    root /home/seirl/www/piscine.koin.fr;
+}

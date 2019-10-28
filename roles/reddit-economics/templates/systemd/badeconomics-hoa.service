@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Badeconomics HOA bot
+
+[Service]
+Type=oneshot
+User={{ reddit_econ_user }}
+WorkingDirectory={{ reddit_econ_hoa_dir }}
+ExecStart={{ reddit_econ_hoa_venv }}/bin/python3 hoa_bot.py
+
+[Install]
+WantedBy=multi-user.target

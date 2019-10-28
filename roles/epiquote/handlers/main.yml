@@ -1,0 +1,7 @@
+- name: restart epiquote gunicorn
+  listen: epiquote restart
+  systemd:
+    name: epiquote.service
+    daemon_reload: True
+    enabled: True
+    state: restarted

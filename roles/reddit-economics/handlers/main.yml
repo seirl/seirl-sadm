@@ -1,0 +1,15 @@
+- name: restart the RI notify bot
+  listen: ri notify restart
+  systemd:
+    name: badeconomics-ri-notify.service
+    daemon_reload: true
+    enabled: true
+    state: restarted
+
+- name: restart the HOA timer
+  listen: hoa restart
+  systemd:
+    name: badeconomics-hoa.timer
+    daemon_reload: true
+    enabled: true
+    state: restarted

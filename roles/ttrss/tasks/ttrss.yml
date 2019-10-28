@@ -1,0 +1,46 @@
+---
+- name: create ttrss directory
+  file:
+    name: "{{ ttrss_dir }}"
+    state: directory
+    recurse: true
+
+- name: clone ttrss git repository
+  git:
+    repo: 'https://git.tt-rss.org/fox/tt-rss.git'
+    dest: "{{ ttrss_dir }}"
+    update: yes
+    version: master
+  notify:
+    - update ttrss schema
+    - restart ttrss update service
+
+- name: create database
+  postgresql_db:
+    login_host: '127.0.0.1'
+    login_user: '{{ ttrss_db_user }}'
+    login_password: '{{ ttrss_db_password }}'
+    name: ttrss
+  notify:
+    - import ttrss schema
+    - restart ttrss update service
+
+- name: write ttrss config
+  template:
+    src: config.php
+    dest: '{{ ttrss_dir }}/config.php'
+  notify:
+    - restart ttrss update service
+
+- name: chmod runtime dirs
+  file:
+    name: '{{ ttrss_dir }}/{{ item }}'
+    state: directory
+    mode: '777'
+  with_items:
+    - cache
+    - cache/images
+    - cache/upload
+    - cache/export
+    - feed-icons
+    - lock

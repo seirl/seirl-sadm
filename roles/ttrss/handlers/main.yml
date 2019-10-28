@@ -1,0 +1,17 @@
+- name: import ttrss schema
+  postgresql_query:
+    login_host: '127.0.0.1'
+    login_user: '{{ ttrss_db_user }}'
+    login_password: '{{ ttrss_db_password }}'
+    db: ttrss
+    path_to_script: '{{ ttrss_dir }}/schema/ttrss_schema_pgsql.sql'
+
+- name: update ttrss schema
+  shell: 'php {{ ttrss_dir }}/update.php'
+
+- name: restart ttrss update service
+  systemd:
+    name: ttrss.service
+    daemon_reload: True
+    enabled: True
+    state: restarted

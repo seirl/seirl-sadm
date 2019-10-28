@@ -1,0 +1,6 @@
+epiquote_dir: /home/epiquote/epiquote
+epiquote_django_settings: epiquote.settings.prod
+epiquote_django_wsgi: epiquote.wsgi:application
+epiquote_venv: "{{ epiquote_dir }}/.venv"
+epiquote_static: "{{ epiquote_dir }}/static"
+epiquote_settings_dir: "{{ epiquote_dir }}/epiquote/settings"

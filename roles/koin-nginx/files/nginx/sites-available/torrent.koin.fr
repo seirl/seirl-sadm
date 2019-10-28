@@ -1,0 +1,18 @@
+server {
+    server_name torrent.koin.fr;
+    include https_config;
+
+    location / {
+        auth_basic "Moi, si tu veux mon opinion, ça fait un peu... has-been";
+        auth_basic_user_file /etc/nginx/htpasswd/seirl;
+
+        client_max_body_size 10m;
+
+        autoindex on;
+        proxy_pass http://localhost:9091;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For
+        $proxy_add_x_forwarded_for;
+    }
+}

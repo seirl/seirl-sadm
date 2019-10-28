@@ -1,0 +1,12 @@
+---
+- name: install transmission
+  apt:
+    name:
+      - transmission-daemon
+    update_cache: yes
+
+- name: update transmission settings
+  template:
+    src: 'settings.json'
+    dest: '/etc/transmission-daemon/settings.json'
+  notify: reload transmission

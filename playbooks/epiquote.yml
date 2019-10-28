@@ -1,0 +1,7 @@
+---
+- name: epiquote deployment
+  hosts:
+    - tyrande
+  remote_user: root
+  roles:
+    - epiquote

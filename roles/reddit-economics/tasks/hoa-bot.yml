@@ -1,0 +1,28 @@
+---
+- name: create reddit-economics directory
+  file:
+    name: "{{ reddit_econ_dir }}"
+    state: directory
+    recurse: true
+
+- name: clone hoa-bot git repository
+  git:
+    repo: 'https://github.com/reddit-economics/hoa-bot'
+    dest: '{{ reddit_econ_hoa_dir }}'
+    update: yes
+    version: master
+  notify: hoa restart
+
+- name: configure hoa-bot settings
+  template:
+    src: hoa-settings.conf
+    dest: '{{ reddit_econ_hoa_dir }}/settings.conf'
+  notify: hoa restart
+
+- name: install hoa-bot requirements
+  pip:
+    requirements: "{{ reddit_econ_hoa_dir }}/requirements.txt"
+    virtualenv: "{{ reddit_econ_hoa_venv }}"
+    virtualenv_command: /usr/bin/env python3 -m venv
+    state: latest
+  notify: hoa restart

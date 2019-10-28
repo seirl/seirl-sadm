@@ -1,0 +1,6 @@
+listen [::]:443 ssl;
+listen 443 ssl;
+ssl_certificate     /etc/letsencrypt/live/koin.fr/fullchain.pem;
+ssl_certificate_key /etc/letsencrypt/live/koin.fr/privkey.pem;
+ssl_dhparam         /etc/ssl/dhparams.pem;
+add_header Strict-Transport-Security "max-age=31536000; always";

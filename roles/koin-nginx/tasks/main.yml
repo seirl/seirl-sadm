@@ -1,0 +1,76 @@
+---
+- name: install web packages
+  apt:
+    name:
+      - nginx
+      - certbot
+      - python3-certbot-nginx
+
+- name: generate DH parameters
+  openssl_dhparam:
+    path: /etc/ssl/dhparams.pem
+    size: 2048
+
+- name: enable certbot timer
+  service:
+    name: certbot
+    daemon_reload: True
+    enabled: True
+
+- name: create certbot renewal hook directory
+  file:
+    path: "/etc/letsencrypt/renewal-hooks/post/"
+    state: directory
+    recurse: True
+
+- name: create nginx reload renewal hook
+  copy:
+    content: |
+      #!/bin/sh
+      systemctl reload nginx
+    dest: "/etc/letsencrypt/renewal-hooks/post/reload-nginx.sh"
+  notify: restart certbot timer
+
+- name: create directories
+  file:
+    path: "/etc/nginx/{{ item.path }}"
+    state: directory
+  with_filetree: nginx/
+  when: item.state == 'directory'
+  loop_control:
+    label: "{{ item.path }}"
+
+- name: template files
+  template:
+    src: '{{ item.src }}'
+    dest: "/etc/nginx/{{ item.path }}"
+  with_filetree: nginx/
+  when: item.state == 'file'
+  loop_control:
+    label: "{{ item.path }}"
+  notify: reload nginx
+
+- name: link enabled sites
+  file:
+    src: "../sites-available/{{ item | basename }}"
+    dest: "/etc/nginx/sites-enabled/{{ item | basename }}"
+    state: link
+  with_fileglob:
+    - nginx/sites-enabled/*
+  notify: reload nginx
+
+- name: create htpasswd directory
+  file:
+    path: '/etc/nginx/htpasswd'
+    state: directory
+
+- name: write htpasswd files
+  copy:
+    dest: '/etc/nginx/htpasswd/{{ item.name }}'
+    content: |
+      {% for password in item.passwords %}
+      {{ password }}
+      {% endfor %}
+  loop_control:
+    label: "{{ item.name }}"
+  with_items: '{{ htpasswd }}'

@@ -1,0 +1,11 @@
+---
+- name: copy the epiquote systemd service
+  template:
+    src: systemd/epiquote.service
+    dest: /etc/systemd/system/epiquote.service
+    mode: '0640'
+  notify: epiquote restart
+
+- import_tasks: epiquote_site.yml
+  become: true
+  become_user: '{{ epiquote_user }}'

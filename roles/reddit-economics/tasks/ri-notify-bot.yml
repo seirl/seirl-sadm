@@ -1,0 +1,28 @@
+---
+- name: create reddit-economics directory
+  file:
+    name: "{{ reddit_econ_dir }}"
+    state: directory
+    recurse: true
+
+- name: clone ri-notify-bot git repository
+  git:
+    repo: 'https://github.com/reddit-economics/ri-notify-bot'
+    dest: "{{ reddit_econ_rinotify_dir }}"
+    update: yes
+    version: master
+  notify: ri notify restart
+
+- name: configure hoa-bot settings
+  template:
+    src: ri-notify-settings.conf
+    dest: '{{ reddit_econ_rinotify_dir }}/settings.conf'
+  notify: ri notify restart
+
+- name: install ri-notify-bot requirements
+  pip:
+    requirements: "{{ reddit_econ_rinotify_dir }}/requirements.txt"
+    virtualenv: "{{ reddit_econ_rinotify_venv }}"
+    virtualenv_command: /usr/bin/env python3 -m venv
+    state: latest
+  notify: ri notify restart

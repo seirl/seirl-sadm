@@ -1,0 +1,14 @@
+server {
+    server_name weechat.koin.fr;
+    include https_config;
+
+    location / {
+        proxy_pass http://localhost:9001;
+        include proxy_params;
+	proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;   # These two lines ensure that the
+        proxy_set_header Connection "Upgrade";    # a WebSocket is used
+        proxy_read_timeout 604800;                # Prevent idle disconnects
+        # limit_req zone=weechat burst=1 nodelay;   # Brute force prevention
+    }
+}

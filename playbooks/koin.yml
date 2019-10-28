@@ -1,0 +1,10 @@
+---
+- name: koin machine setup
+  hosts:
+    - tyrande
+  remote_user: root
+  roles:
+    - koin-base
+    - koin-nginx
+    - transmission
+    - bitlbee

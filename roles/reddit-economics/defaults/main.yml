@@ -1,0 +1,7 @@
+reddit_econ_dir: '/home/redditecon/reddit-economics'
+
+reddit_econ_hoa_dir: '{{ reddit_econ_dir }}/hoa-bot'
+reddit_econ_hoa_venv: '{{ reddit_econ_hoa_dir }}/.venv'
+
+reddit_econ_rinotify_dir: '{{ reddit_econ_dir }}/ri-notify-bot'
+reddit_econ_rinotify_venv: '{{ reddit_econ_rinotify_dir }}/.venv'

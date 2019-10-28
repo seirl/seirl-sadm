@@ -1,0 +1,32 @@
+---
+- name: install php and modules
+  apt:
+    name:
+      - php
+      - php-curl
+      - php-fpm
+      - php-gd
+      - php-intl
+      - php-json
+      - php-mbstring
+      - php-pgsql
+      - php-php-gettext
+      - php-xml
+      - phpqrcode
+
+- name: add ttrss postgresql user
+  postgresql_user:
+    name: '{{ ttrss_db_user }}'
+    password: '{{ ttrss_db_password }}'
+  become: true
+  become_user: postgres
+
+- import_tasks: ttrss.yml
+  become: true
+  become_user: '{{ ttrss_user }}'
+
+- name: copy the ttrss systemd update service
+  template:
+    src: systemd/ttrss.service
+    dest: /etc/systemd/system/ttrss.service
+  notify: restart ttrss update service

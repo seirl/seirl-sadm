@@ -1,0 +1,57 @@
+---
+- name: create epiquote directory
+  file:
+    name: "{{ epiquote_dir }}"
+    state: directory
+    recurse: true
+
+- name: clone epiquote git repository
+  git:
+    repo: 'https://github.com/seirl/epiquote'
+    dest: "{{ epiquote_dir }}"
+    update: yes
+    version: master
+  notify: epiquote restart
+
+- name: create virtualenv
+  pip:
+    name:
+      - pip
+      - wheel
+      - gunicorn
+    virtualenv: "{{ epiquote_venv }}"
+    virtualenv_command: /usr/bin/env python3 -m venv
+  notify: epiquote restart
+
+- name: create database
+  postgresql_db:
+    login_user: '{{ epiquote_user }}'
+    name: epiquote
+
+- name: update requirements
+  pip:
+    requirements: "{{ epiquote_dir }}/requirements.txt"
+    virtualenv: "{{ epiquote_venv }}"
+    virtualenv_command: python3 -m venv
+  notify: epiquote restart
+
+- name: configure site settings
+  template:
+    src: settings.py
+    dest: "{{ epiquote_settings_dir }}/prod.py"
+  notify: epiquote restart
+
+- name: apply database migrations
+  django_manage:
+    command: migrate
+    app_path: "{{ epiquote_dir }}"
+    settings: "{{ epiquote_django_settings }}"
+    virtualenv: "{{ epiquote_venv }}"
+  notify: epiquote restart
+
+- name: collect static files
+  django_manage:
+    command: collectstatic
+    app_path: "{{ epiquote_dir }}"
+    settings: "{{ epiquote_django_settings }}"
+    virtualenv: "{{ epiquote_venv }}"

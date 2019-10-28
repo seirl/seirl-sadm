@@ -1,0 +1,7 @@
+---
+- name: reddit-economics deployment
+  hosts:
+    - tyrande
+  remote_user: root
+  roles:
+    - reddit-economics

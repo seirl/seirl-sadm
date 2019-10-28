@@ -1,0 +1,21 @@
+- name: Reload nginx
+  listen: reload nginx
+  service:
+    name: nginx
+    state: reloaded
+
+- name: restart certbot timer
+  service:
+    name: certbot
+    state: restarted
+
+- name: Renew certificates
+  listen: renew certificates
+  command: >
+    certbot --nginx certonly
+    --non-interactive
+    --cert-name {{ cert_name }}
+    {% for site in cert_sites %}
+    -d {{ site }}
+    {% endfor %}
+  notify: reload nginx

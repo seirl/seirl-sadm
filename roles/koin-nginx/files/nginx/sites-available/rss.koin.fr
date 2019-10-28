@@ -1,0 +1,24 @@
+server {
+    include https_config;
+    server_name rss.koin.fr;
+
+    access_log  /var/log/nginx/rss.koin.fr-access_log;
+    error_log   /var/log/nginx/rss.koin.fr-error_log;
+
+    root {{ ttrss_dir }};
+    index index.html index.htm index.php;
+
+    location / {
+        auth_basic "seirl's RSS aggregator";
+        auth_basic_user_file /etc/nginx/htpasswd/seirl;
+    }
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME {{ ttrss_dir }}$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}
+

@@ -1,0 +1,4 @@
+- name: reload transmission
+  systemd:
+    name: transmission-daemon.service
+    state: reloaded
