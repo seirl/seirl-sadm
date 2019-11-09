@@ -1,0 +1,27 @@
+---
+- name: trust weechat repo key
+  apt_key:
+    id: 11E9DE8848F2B65222AA75B8D1820DB22A11534E
+    keyserver: hkps://keys.openpgp.org
+    state: present
+
+- name: add weechat repository
+  apt_repository:
+    repo: deb https://weechat.org/debian buster main
+    state: present
+    filename: weechat
+  register: addrepo
+
+- name: update apt cache
+  apt:
+    update_cache: yes
+  when: addrepo.changed
+
+- name: install weechat and plugins
+  apt:
+    name:
+      - weechat-curses
+      - weechat-plugins
+      - weechat-python
+      - weechat-perl
+      - python3-websocket  # for weeslack
