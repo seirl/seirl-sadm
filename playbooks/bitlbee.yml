@@ -1,0 +1,7 @@
+---
+- name: ttrss deployment
+  hosts:
+    - tyrande
+  remote_user: root
+  roles:
+    - bitlbee

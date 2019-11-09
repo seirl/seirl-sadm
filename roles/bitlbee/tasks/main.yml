@@ -1,4 +1,32 @@
-- name: install bitlbee
+---
+- name: trust bitlbee repo key
+  apt_key:
+    url: https://code.bitlbee.org/debian/release.key
+    state: present
+
+- name: add bitlbee repository
+  apt_repository:
+    repo: deb http://code.bitlbee.org/debian/develop/buster/amd64/ ./
+    state: present
+    filename: bitlbee
+  register: addrepo
+
+- name: update apt cache
+  apt:
+    update_cache: yes
+  when: addrepo.changed
+
+- name: install bitlbee and plugins
   apt:
     name:
-      - bitlbee
+      - bitlbee-dev
+      - bitlbee-libpurple
+      - bitlbee-plugin-facebook
+
+- import_tasks: bitlbee_hangouts.yml
+
+- name: enable and start bitlbee
+  systemd:
+    name: bitlbee
+    state: started
+    daemon_reload: True

@@ -1,0 +1,37 @@
+---
+- name: install purple-hangouts build dependencies
+  apt:
+    name:
+      - gcc
+      - libglib2.0-dev
+      - libjson-glib-dev
+      - libprotobuf-c-dev
+      - libpurple-dev
+      - make
+      - mercurial
+      - protobuf-c-compiler
+
+- name: create contrib/purple-hangouts directory
+  file:
+    name: '{{ purple_hangouts_dir }}'
+    state: directory
+    recurse: true
+    owner: '{{ purple_hangouts_user }}'
+
+- name: clone purple-hangouts
+  hg:
+    repo: 'https://bitbucket.org/EionRobb/purple-hangouts'
+    dest: '{{ purple_hangouts_dir }}'
+    update: yes
+    version: default
+  become_user: '{{ purple_hangouts_user }}'
+
+- name: build purple-hangouts
+  make:
+    chdir: '{{ purple_hangouts_dir }}'
+  become_user: '{{ purple_hangouts_user }}'
+
+- name: install purple-hangouts
+  make:
+    chdir: '{{ purple_hangouts_dir }}'
+    target: install
