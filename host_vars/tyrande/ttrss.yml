@@ -1,4 +1,4 @@
 ttrss_user: seirl
 ttrss_dir: "/home/seirl/www/rss.koin.fr"
-ttrss_url: 'https://rss.koin.fr/'
+ttrss_domain: 'rss.koin.fr'
 ttrss_db_user: ttrss
