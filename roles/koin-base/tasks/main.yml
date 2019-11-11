@@ -4,9 +4,11 @@
     name:
       - aptitude
       - curl
+      - fail2ban
       - git
       - gpg
       - htop
+      - mosh
       - man
       - postgresql
       - python3
@@ -14,8 +16,10 @@
       - python3-dev
       - python3-psycopg2
       - python3-venv
+      - reptyr
       - rsync
       - sudo
+      - tmux
       - vim
       - zsh
     update_cache: yes
