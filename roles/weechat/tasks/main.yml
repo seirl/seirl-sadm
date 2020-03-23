@@ -25,3 +25,7 @@
       - weechat-python
       - weechat-perl
       - python3-websocket  # for weeslack
+
+- import_tasks: ripgrep_weechat.yml
+
+- import_tasks: tmux_weechat.yml

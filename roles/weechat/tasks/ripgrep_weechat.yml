@@ -1,0 +1,35 @@
+---
+- name: install ripgrep-weechat build dependencies
+  apt:
+    name:
+      - cargo
+      - clang
+      - libclang-dev
+      - rustc
+
+- name: create contrib/ripgrep-weechat directory
+  file:
+    name: '{{ ripgrep_weechat_dir }}'
+    state: directory
+    recurse: true
+    owner: '{{ ripgrep_weechat_user }}'
+
+- name: clone ripgrep-weechat
+  git:
+    repo: 'https://github.com/poljar/ripgrep-weechat'
+    dest: '{{ ripgrep_weechat_dir }}'
+    update: yes
+    version: master
+  become: true
+  become_user: '{{ ripgrep_weechat_user }}'
+
+- name: build ripgrep-weechat
+  make:
+    chdir: '{{ ripgrep_weechat_dir }}'
+  become: true
+  become_user: '{{ ripgrep_weechat_user }}'
+
+- name: install ripgrep-weechat
+  make:
+    chdir: '{{ ripgrep_weechat_dir }}'
+    target: install

@@ -1,0 +1,43 @@
+---
+- name: install tmux
+  apt:
+    name:
+      - tmux
+
+- name: Create lingering directory
+  file:
+    path: /var/lib/systemd/linger
+    state: directory
+
+- name: Enable weechat users lingering
+  copy:
+    content: ""
+    dest: '/var/lib/systemd/linger/{{ weechat_user }}'
+    force: no
+    group: root
+    owner: root
+    mode: 0644
+
+- name: Create systemd user directory
+  file:
+    path: '/home/{{ weechat_user }}/.config/systemd/user'
+    state: directory
+  become: true
+  become_user: '{{ weechat_user }}'
+
+- name: add weechat user service
+  template:
+    src: weechat.service
+    dest: '/home/{{ weechat_user }}/.config/systemd/user/weechat.service'
+  become: true
+  become_user: '{{ weechat_user }}'
+
+- name: enable weechat user service
+  systemd:
+    scope: user
+    name: weechat.service
+    daemon_reload: true
+    enabled: true
+    state: started
+  become: true
+  become_user: '{{ weechat_user }}'
