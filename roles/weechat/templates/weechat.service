@@ -2,8 +2,7 @@
 Description=Weechat IRC Client (in tmux)
 
 [Service]
-Type=oneshot
-RemainAfterExit=yes
+Type=forking
 ExecStart=/usr/bin/tmux -2 new-session -d -s irc /usr/bin/weechat \; set status off
 ExecStop=/usr/bin/tmux kill-session -t irc
 
