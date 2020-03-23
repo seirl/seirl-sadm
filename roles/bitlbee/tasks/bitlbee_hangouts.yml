@@ -24,11 +24,13 @@
     dest: '{{ purple_hangouts_dir }}'
     update: yes
     version: default
+  become: true
   become_user: '{{ purple_hangouts_user }}'
 
 - name: build purple-hangouts
   make:
     chdir: '{{ purple_hangouts_dir }}'
+  become: true
   become_user: '{{ purple_hangouts_user }}'
 
 - name: install purple-hangouts
