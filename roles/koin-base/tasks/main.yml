@@ -49,3 +49,8 @@
   template:
     src: 'hosts'
     dest: '/etc/hosts'
+
+- name: Create persistent log directory
+  file:
+    path: /var/log/journal
+    state: directory
