@@ -4,8 +4,10 @@
     name:
       - aptitude
       - curl
+      - dnsutils
       - fail2ban
       - git
+      - git-extras
       - gpg
       - htop
       - mosh
