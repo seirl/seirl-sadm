@@ -7,12 +7,12 @@
       - libclang-dev
       - rustc
 
-- name: create contrib/ripgrep-weechat directory
+- name: create ripgrep-weechat directory
   file:
     name: '{{ ripgrep_weechat_dir }}'
     state: directory
     recurse: true
-    owner: '{{ ripgrep_weechat_user }}'
+    owner: '{{ weechat_user }}'
 
 - name: clone ripgrep-weechat
   git:
@@ -21,13 +21,13 @@
     update: yes
     version: master
   become: true
-  become_user: '{{ ripgrep_weechat_user }}'
+  become_user: '{{ weechat_user }}'
 
 - name: build ripgrep-weechat
   make:
     chdir: '{{ ripgrep_weechat_dir }}'
   become: true
-  become_user: '{{ ripgrep_weechat_user }}'
+  become_user: '{{ weechat_user }}'
 
 - name: install ripgrep-weechat
   make:

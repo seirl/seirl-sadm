@@ -1,0 +1,3 @@
+weechat_virtualenv: '/home/{{ weechat_user }}/.weechat/python/venv'
+weechat_matrix_dir: '/home/{{ weechat_user }}/contrib/weechat-matrix'
+ripgrep_weechat_dir: "/home/{{ weechat_user }}/contrib/ripgrep-weechat"

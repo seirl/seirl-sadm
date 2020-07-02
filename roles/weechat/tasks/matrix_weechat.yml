@@ -1,0 +1,41 @@
+---
+- name: install weechat-matrix dependencies
+  apt:
+    name:
+      - virtualenv
+
+- name: install weechat-matrix dependencies (from backports)
+  apt:
+    name:
+      - libolm-dev
+    default_release: buster-backports
+
+- name: create weechat-matrix directory
+  file:
+    name: '{{ weechat_matrix_dir }}'
+    state: directory
+    recurse: true
+    owner: '{{ weechat_user }}'
+
+- name: clone weechat-matrix
+  git:
+    repo: 'https://github.com/poljar/weechat-matrix'
+    dest: '{{ weechat_matrix_dir }}'
+    update: yes
+    version: master
+  become: true
+  become_user: '{{ weechat_user }}'
+
+- name: install weechat-matrix requirements
+  pip:
+    requirements: "{{ weechat_matrix_dir }}/requirements.txt"
+    virtualenv: "{{ weechat_virtualenv }}"
+  become: true
+  become_user: '{{ weechat_user }}'
+
+- name: install weechat-matrix
+  make:
+    chdir: '{{ weechat_matrix_dir }}'
+    target: install
+  become: true
+  become_user: '{{ weechat_user }}'

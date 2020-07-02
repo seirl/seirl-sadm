@@ -10,12 +10,6 @@
     repo: deb https://weechat.org/debian buster main
     state: present
     filename: weechat
-  register: addrepo
-
-- name: update apt cache
-  apt:
-    update_cache: yes
-  when: addrepo.changed
 
 - name: install weechat and plugins
   apt:
@@ -26,6 +20,9 @@
       - weechat-perl
       - python3-websocket  # for weeslack
 
-- import_tasks: ripgrep_weechat.yml
+# Pretty unstable, sometimes segfault and compilation often broken
+# - import_tasks: ripgrep_weechat.yml
+
+- import_tasks: matrix_weechat.yml
 
 - import_tasks: tmux_weechat.yml
