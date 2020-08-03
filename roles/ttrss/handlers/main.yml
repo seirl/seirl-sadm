@@ -8,6 +8,8 @@
 
 - name: update ttrss schema
   shell: 'php {{ ttrss_dir }}/update.php'
+  become: true
+  become_user: '{{ ttrss_user }}'
 
 - name: restart ttrss update service
   systemd:
