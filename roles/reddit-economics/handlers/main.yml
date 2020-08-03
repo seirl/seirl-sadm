@@ -19,5 +19,5 @@
   systemd:
     name: badeconomics-hoa.timer
     daemon_reload: true
-    enabled: true
-    state: restarted
+    enabled: false  # Disabled for the time being
+    state: stopped
