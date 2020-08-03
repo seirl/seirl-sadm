@@ -1,0 +1,38 @@
+---
+- name: Install the koin.fr machine
+  hosts:
+    - tyrande
+  remote_user: root
+
+  tasks:
+    - import_role:
+        name: koin-base
+      tags: koin-base
+
+    - import_role:
+        name: koin-nginx
+      tags: koin-nginx
+
+    - import_role:
+        name: epiquote
+      tags: epiquote
+
+    - import_role:
+        name: bitlbee
+      tags: bitlbee
+
+    - import_role:
+        name: weechat
+      tags: weechat
+
+    - import_role:
+        name: transmission
+      tags: transmission
+
+    - import_role:
+        name: reddit-economics
+      tags: reddit-economics
+
+    - import_role:
+        name: ttrss
+      tags: ttrss

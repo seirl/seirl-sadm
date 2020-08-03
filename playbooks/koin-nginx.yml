@@ -1,7 +1,0 @@
----
-- name: koin nginx setup
-  hosts:
-    - tyrande
-  remote_user: root
-  roles:
-    - koin-nginx
