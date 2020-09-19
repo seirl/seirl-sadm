@@ -28,6 +28,13 @@ server {
         auth_basic "prologin members only";
         auth_basic_user_file /home/seirl/www/koin.fr/prologin/.htpasswd;
     }
+
+    location /torrents {
+        alias /var/lib/transmission-daemon/downloads/;
+        autoindex on;
+        auth_basic "Torrents";
+        auth_basic_user_file /home/seirl/www/koin.fr/.htpasswd-torrents;
+    }
 }
 
 server {
