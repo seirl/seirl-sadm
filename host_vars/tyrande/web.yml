@@ -1,7 +1,7 @@
 cert_name: koin.fr
 cert_sites:
   - koin.fr
-  - lda.koin.fr
+  - crowdbar.koin.fr
   - rss.koin.fr
   - torrent.koin.fr
   - weechat.koin.fr
