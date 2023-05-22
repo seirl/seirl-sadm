@@ -1,15 +1,7 @@
-- name: restart the RI notify bot (post watcher)
+- name: restart the RI notify bot
   listen: ri notify restart
   systemd:
     name: badeconomics-ri-notify.service
-    daemon_reload: true
-    enabled: true
-    state: restarted
-
-- name: restart the RI notify bot (command watcher)
-  listen: ri notify restart
-  systemd:
-    name: badeconomics-ri-command.service
     daemon_reload: true
     enabled: true
     state: restarted

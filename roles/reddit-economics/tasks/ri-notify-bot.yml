@@ -21,7 +21,7 @@
 
 - name: install ri-notify-bot requirements
   pip:
-    requirements: "{{ reddit_econ_rinotify_dir }}/requirements.txt"
+    name: "{{ reddit_econ_rinotify_dir }}"
     virtualenv: "{{ reddit_econ_rinotify_venv }}"
     virtualenv_command: /usr/bin/env python3 -m venv
     state: latest

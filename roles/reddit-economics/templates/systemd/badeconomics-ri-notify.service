@@ -6,7 +6,7 @@ Description=BadEconomics RI Bot post watcher
 [Service]
 User={{ reddit_econ_user }}
 WorkingDirectory={{ reddit_econ_rinotify_dir }}
-ExecStart={{ reddit_econ_rinotify_venv }}/bin/python3 ri_notify.py post_watcher
+ExecStart={{ reddit_econ_rinotify_venv }}/bin/python3 ri_notify.py
 Restart=on-failure
 RestartSec=10
 
